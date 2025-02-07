@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Seahawks Network Scanner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Seahawks Network Scanner</h1>
+        
+        <div class="dashboard">
+            <div class="info-panel">
+                <h2>System Info</h2>
+                <p>IP Address: <span id="ip-address">Loading...</span></p>
+                <p>Hostname: <span id="hostname">Loading...</span></p>
+            </div>
+            
+            <div class="scan-panel">
+                <button id="scan-btn" onclick="startScan()">Start Network Scan</button>
+                <div id="scan-results" class="results-panel">
+                    <h3>Scan Results</h3>
+                    <div id="results-content"></div>
+                </div>
+            </div>
+            <div class="server-ping-section">
+                <h2>Server Connection Test</h2>
+                <div class="input-group">
+                    <input type="text" id="server-ip" placeholder="Server IP" class="form-control">
+                    <button onclick="pingServer()" class="btn btn-primary">Ping Server</button>
+                </div>
+                <div id="ping-result" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+Flask==2.3.3
+Werkzeug==2.3.7
+python-nmap==0.7.1
+pytest==7.4.2
+flask-cors==4.0.0
