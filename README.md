@@ -31,6 +31,10 @@ Un outil de scan réseau développé avec Flask et Python, permettant le scan de
 sudo apt-get update
 sudo apt-get install nmap
 ```
+### Prérequis supplémentaires pour Linux
+```bash
+sudo apt install python3.12-venv
+```
 
 ## Installation
 
