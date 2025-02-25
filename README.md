@@ -1,13 +1,18 @@
 # Seahawks Network Scanner
 
-Un outil de scan réseau développé avec Flask et Python, permettant le scan de ports et le ping de serveurs dans le cadre d'un projet MSPR.
+Un outil de scan réseau développé avec Flask et Python, permettant le scan de ports multiples et le ping de serveurs dans le cadre d'un projet MSPR.
 
 ## Fonctionnalités
 
-- Scan des ports de la machine locale
+- Détection et scan de toutes les interfaces réseau actives
+- Scan des ports ouverts sur chaque interface
+- Affichage des informations détaillées du système :
+  - Nom d'hôte
+  - Liste des interfaces réseau avec leurs statuts (actif/inactif)
+  - Adresses IP avec notation CIDR
+  - Masques de sous-réseau
 - Ping serveur avec mesure de latence
-- Affichage des informations système
-- Interface web
+- Interface web responsive
 
 ## Prérequis
 
@@ -31,8 +36,8 @@ sudo apt-get install nmap
 
 1. Clonez le dépôt :
 ```bash
-git clone https://github.com/votre-username/seahawks-network-scanner.git
-cd seahawks-network-scanner
+git clone https://github.com/Saint-Pedro/seahawk-network-scanner-II
+cd seahawks-network-scanner-II
 ```
 
 2. Créez un environnement virtuel :
@@ -83,17 +88,34 @@ flask run
 ## Utilisation
 
 1. Informations Système :
-   - Votre adresse IP locale et nom d'hôte sont affichés automatiquement
+   - Visualisez votre nom d'hôte et toutes vos interfaces réseau
+   - Pour chaque interface, vous pouvez voir l'adresse IP, le masque de sous-réseau en notation CIDR, et le statut (actif/inactif)
 
 2. Scanner les Ports Locaux :
-   - Cliquez sur "Start Network Scan" pour scanner les ports de votre machine
+   - Cliquez sur "Start Network Scan" pour scanner les ports de toutes vos interfaces réseau
+   - Les résultats sont affichés par interface, avec la liste des ports ouverts et leurs services associés
 
 3. Ping Serveur :
    - Entrez une adresse IP dans le champ de saisie
    - Cliquez sur "Ping Server" pour tester la connectivité et mesurer la latence
+   - Supporte automatiquement les formats de sortie en français et en anglais
+
+## Notes Techniques
+
+- L'application utilise `psutil` pour une détection précise des interfaces réseau
+- Le scan des ports est réalisé via `python-nmap`
+- Support multi-plateforme (Windows, Linux, macOS)
+- Détection intelligente des encodages de sortie pour les commandes système
 
 ## Notes de Sécurité
 
+- Certaines fonctionnalités (comme le scan de ports) peuvent nécessiter des droits administrateur
 - Cet outil est destiné uniquement à l'administration et aux tests réseau
 - Assurez-vous d'avoir l'autorisation de scanner le réseau/système cible
 - Utilisez de manière responsable et conformément aux politiques de sécurité de votre organisation
+
+## Dépannage
+
+- Sur Windows, si vous rencontrez des problèmes d'encodage, vérifiez que votre terminal supporte l'encodage cp850
+- Sur Linux, assurez-vous que le package python3-venv est installé (`sudo apt install python3-venv`)
+- Les pare-feu peuvent bloquer les scans de ports - vérifiez vos paramètres de sécurité

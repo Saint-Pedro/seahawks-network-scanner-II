@@ -27,15 +27,26 @@ async function startScan() {
 function displayResults(data) {
     const results = document.getElementById('results-content');
     
-    const html = `
-        <div class="scan-summary">
-            <h3>Local Machine Scan Results</h3>
-            <p>IP Address: ${data.device.ip}</p>
-            <p>Hostname: ${data.device.hostname}</p>
-            <p>App Version: ${data.app_version}</p>
+    // Si aucune interface n'a été trouvée
+    if (data.devices.length === 0) {
+        results.innerHTML = `<p>No active network interfaces found</p>`;
+        return;
+    }
+    
+    // Créer le HTML pour afficher les résultats de chaque interface
+    let html = `<div class="scan-summary">
+        <h3>Network Scan Results</h3>
+        <p>App Version: ${data.app_version}</p>`;
+    
+    // Pour chaque interface réseau
+    data.devices.forEach(device => {
+        html += `
+        <div class="interface-result">
+            <h4>Interface: ${device.interface_name}</h4>
+            <p>IP Address: ${device.ip}</p>
             
-            <h4>Open Ports:</h4>
-            ${data.device.ports.length > 0 ? `
+            <h5>Open Ports:</h5>
+            ${device.ports.length > 0 ? `
                 <table class="results-table">
                     <thead>
                         <tr>
@@ -44,7 +55,7 @@ function displayResults(data) {
                         </tr>
                     </thead>
                     <tbody>
-                        ${data.device.ports.map(port => `
+                        ${device.ports.map(port => `
                             <tr>
                                 <td>${port.port}</td>
                                 <td>${port.service}</td>
@@ -54,8 +65,10 @@ function displayResults(data) {
                 </table>
             ` : '<p>No open ports found</p>'}
         </div>
-    `;
+        <hr>`;
+    });
     
+    html += `</div>`;
     results.innerHTML = html;
 }
 
@@ -69,10 +82,56 @@ async function loadSystemInfo() {
         const response = await fetch('/api/system-info');
         const data = await response.json();
         
-        document.getElementById('ip-address').textContent = data.ip_address;
+        // Afficher le nom d'hôte
         document.getElementById('hostname').textContent = data.hostname;
+        
+        // Afficher les interfaces réseau
+        const interfacesContainer = document.getElementById('interfaces-list');
+        
+        if (data.network_interfaces.length === 0) {
+            interfacesContainer.innerHTML = '<p>No network interfaces found</p>';
+            return;
+        }
+        
+        let interfacesHtml = '';
+        
+        // Pour chaque interface réseau
+        data.network_interfaces.forEach(interface => {
+            const statusClass = interface.status === 'up' ? 'status-up' : 'status-down';
+            
+            interfacesHtml += `
+            <div class="interface-card">
+                <div class="interface-header">
+                    <h4>${interface.name}</h4>
+                    <span class="status ${statusClass}">${interface.status}</span>
+                </div>
+                
+                <div class="interface-addresses">
+                    ${interface.addresses.map(addr => {
+                        if (addr.type === 'IPv4') {
+                            return `
+                            <div class="address-item">
+                                <span class="address-type">${addr.type}:</span>
+                                <span class="address-value">${addr.address}</span>
+                                <span class="address-cidr">(${addr.cidr})</span>
+                            </div>`;
+                        } else {
+                            return `
+                            <div class="address-item">
+                                <span class="address-type">${addr.type}:</span>
+                                <span class="address-value">${addr.address}</span>
+                            </div>`;
+                        }
+                    }).join('')}
+                </div>
+            </div>`;
+        });
+        
+        interfacesContainer.innerHTML = interfacesHtml;
     } catch (error) {
         console.error('Error loading system info:', error);
+        document.getElementById('interfaces-list').innerHTML = 
+            `<p class="error">Error loading network interfaces: ${error.message}</p>`;
     }
 }
 

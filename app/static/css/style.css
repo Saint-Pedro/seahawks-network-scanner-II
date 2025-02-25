@@ -21,6 +21,8 @@
     padding: 15px;
     background: white;
     border: 1px solid #ddd;
+    max-height: 600px;
+    overflow-y: auto;
 }
 
 button {
@@ -84,4 +86,99 @@ button:disabled {
     padding: 10px;
     border-radius: 4px;
     margin-top: 10px;
+}
+
+/* Styles pour les interfaces réseau */
+.interface-card {
+    background: white;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.interface-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.interface-header h4 {
+    margin: 0;
+}
+
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.status-up {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-down {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.interface-addresses {
+    font-family: monospace;
+}
+
+.address-item {
+    margin-bottom: 6px;
+}
+
+.address-type {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.address-cidr {
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
+/* Styles pour les résultats de scan */
+.interface-result {
+    background: white;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.interface-result h4 {
+    margin-top: 0;
+    color: #007bff;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.results-table th, .results-table td {
+    border: 1px solid #dee2e6;
+    padding: 8px;
+    text-align: left;
+}
+
+.results-table th {
+    background-color: #f8f9fa;
+}
+
+/* Media queries pour la responsivité */
+@media (max-width: 768px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+    
+    .server-ping-section {
+        margin: 20px 0;
+    }
 }
